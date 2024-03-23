@@ -1,3 +1,19 @@
+"""
+Dear Programmer:
+When We wrote this code, only god, and
+We knew how it worked.
+Now, only god know it!
+
+Therefore, if you are trying to optimize
+this routine, and it fails (most surely),
+please increase this counter as a
+warning for the next person:
+
+total hours wasted here = 75
+
+"""
+
+
 import os
 import re
 import json
@@ -14,7 +30,7 @@ import time  # Import time module for delay
 # Set up Selenium WebDriver
 driver = webdriver.Firefox()  # change this parameter if you have different browser
 
-# url patterns for websites
+# Declaring url patterns for websites for further use
 nvd_url_pattern = "https://nvd.nist.gov/vuln/detail/{cve_id}"
 exploit_db_url_pattern = "https://www.exploit-db.com/search?cve={cve_id}"
 cve_url_pattern = "https://www.cvedetails.com/cve/{cve_id}/"
@@ -23,35 +39,47 @@ vulmon_url_pattern = "https://vulmon.com/vulnerabilitydetails?qid={cve_id}&score
 
 # nvd scraper by Mahammad
 def get_nvd_info(cve_id):
+    # Construct the URL using the CVE ID
     url = nvd_url_pattern.format(cve_id=cve_id)
+
+    # Access the URL in a WebDriver
     driver.get(url)
 
     try:
+        # Find the element containing vulnerability summary and wait for its presence
         summary_element = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, "//p[@data-testid='vuln-description']"))
         )
+        # Extract the vulnerability summary
         summary = summary_element.text
     except:
         summary = "Summary is not available"
 
     try:
+        # Find the element containing CVSS score
         cvss_score_element = driver.find_element(By.XPATH, "//a[@data-testid='vuln-cvss3-panel-score']")
+        # Extract the CVSS score
         cvss_score = cvss_score_element.text
     except:
         cvss_score = "Base score is not available"
 
     try:
+        # Find the element containing CVSS vector
         vector_element = driver.find_element(By.XPATH, "//span[@data-testid='vuln-cvss3-nist-vector']")
+        # Extract the CVSS vector
         vector = vector_element.text
     except:
         vector = "Vector is not available"
 
     try:
+        # Find the element containing reference link
         reference_element = driver.find_element(By.XPATH, "//td[@data-testid='vuln-hyperlinks-link-0']/a")
+        # Extract the reference link
         reference = reference_element.get_attribute("href")
     except:
         reference = "Reference is not available"
 
+    # Return the gathered information
     return summary, cvss_score, vector, reference
 
 
@@ -114,7 +142,8 @@ def check_exploit_db(cve_id):
     # Open the URL in the browser
     driver.get(url)
 
-    # Wait for the page to load
+    # Wait for the page to load (let's improve this comment to explain why we're waiting)
+    # Waiting for a fixed time might not be the most robust approach, consider alternatives like WebDriverWait
     time.sleep(5)
 
     # Find the table containing the links
@@ -195,11 +224,14 @@ def create_docx_report(cve_id, nvd_info, affected_systems_info, exploit_links): 
 
 # json export by Nuray
 def export_to_json(cve_id, nvd_info, exploit_links, affected_systems_info):
+    # Unpack NVD information
     summary, cvss_score, vector, reference = nvd_info
 
+    # Separate exploit links into download and non-download links
     download_exploits = [link for link in exploit_links if '/download/' in link]
     look_exploits = [link for link in exploit_links if '/download/' not in link]
 
+    # Prepare data for JSON export
     data = {
         "CVE_ID": cve_id,
         "NVD_Info": {
@@ -214,11 +246,19 @@ def export_to_json(cve_id, nvd_info, exploit_links, affected_systems_info):
             "Look_Exploits": look_exploits
         }
     }
+
+    # Create a folder to store reports if it doesn't exist
     folder_name = f"reports/{cve_id}"
     os.makedirs(folder_name, exist_ok=True)
+
+    # Define the JSON file name
     json_filename = os.path.join(folder_name, f"{cve_id}.json")
+
+    # Write data to JSON file
     with open(json_filename, "w") as json_file:
         json.dump(data, json_file, indent=4)
+
+    # Return the path of the generated JSON file
     return json_filename
 
 
@@ -295,7 +335,7 @@ def export_to_pdf(cve_id, nvd_info, exploit_links, affected_systems_info):
     return pdf_filename
 
 
-# export to md function by Mahammad
+# export to md function by Ravan
 def export_to_markdown(cve_id, nvd_info, exploit_links, affected_systems_info):
     summary, cvss_score, vector, reference = nvd_info
 
@@ -339,11 +379,14 @@ def export_to_markdown(cve_id, nvd_info, exploit_links, affected_systems_info):
 
 # export to webpage by Mahammad
 def export_to_html(cve_id, nvd_info, exploit_links, affected_systems_info):
+    # Unpack NVD information
     summary, cvss_score, vector, reference = nvd_info
 
+    # Separate exploit links into download and non-download links
     download_exploits = [link for link in exploit_links if '/download/' in link]
     look_exploits = [link for link in exploit_links if '/download/' not in link]
 
+    # HTML content template
     html_content = f"""
     <!DOCTYPE html>
     <html lang="en">
@@ -403,35 +446,44 @@ def export_to_html(cve_id, nvd_info, exploit_links, affected_systems_info):
         <h2>Exploit Information</h2>
         """
 
+    # Add download exploit links if available
     if download_exploits:
         html_content += "<h3>Exploit Links to Download</h3><ul>"
         for link in download_exploits:
             html_content += f"<li><a href='{link}'>{link}</a></li>"
         html_content += "</ul>"
 
+    # Add non-download exploit links if available
     if look_exploits:
         html_content += "<h3>Exploit Links to Look</h3><ul>"
         for link in look_exploits:
             html_content += f"<li><a href='{link}'>{link}</a></li>"
         html_content += "</ul>"
 
+    # Close HTML content
     html_content += """
     </body>
     </html>
     """
 
+    # Create folder to store reports if it doesn't exist
     folder_name = f"reports/{cve_id}"
     os.makedirs(folder_name, exist_ok=True)
+
+    # Define HTML file name
     html_filename = os.path.join(folder_name, f"report_{cve_id}.html")
 
+    # Write HTML content to file
     with open(html_filename, 'w') as f:
         f.write(html_content)
 
+    # Return the path of the generated HTML file
     return html_filename
 
 
-# tab opener by Ravan
+# tab opener by Mahammad
 def open_references(cve_id):
+    # Construct URLs based on the CVE ID
     nvd_url = nvd_url_pattern.format(cve_id=cve_id)
     exploit_db_url = exploit_db_url_pattern.format(cve_id=cve_id)
     cve_url = cve_url_pattern.format(cve_id=cve_id)

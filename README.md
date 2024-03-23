@@ -47,6 +47,7 @@ We can also install dependencies using requirements.txt
 * Developed the HTML exporter module for generating HTML reports.
 * Developed the exploit list scraper from Vulmon which is currently inactive due to uselessness, but it's still functioning.
 * Developed to the main function.
+* Developed second version of main function which allows the user to choose the file extension to export
 
 **Nuray**
 #### Responsibilities:

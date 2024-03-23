@@ -3,5 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/file_edition/reports/CVE-2017-0144/report_CVE-2017-0144.md" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/file_edition/reports/CVE-2021-44228/report_CVE-2021-44228.md" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/reports/CVE-2017-0144/report_CVE-2017-0144.md" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/reports/CVE-2021-44228/report_CVE-2021-44228.md" charset="windows-1252" />
   </component>
 </project>
