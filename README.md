@@ -48,3 +48,7 @@ Additionally, this project has "file-options" version, which allows users to cho
 #### Responsibilities:
 * Implemented the Exploit-DB scraper module for retrieving exploit information.
 * Developed the Markdown exporter module for generating reports in Markdown(".md") format.
+
+## License
+
+This project is licensed under the GNU GENERAL PUBLIC LICENSE License - see the [LICENSE](LICENSE) file for details.
