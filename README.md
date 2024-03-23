@@ -61,7 +61,8 @@ We can also install dependencies using requirements.txt
 **Ravan**
 #### Responsibilities:
 * Implemented the Exploit-DB scraper module for retrieving exploit information.
-* Developed the Markdown exporter module for generating reports in Markdown(".md") format.
+* Developed the Markdown exporter module for generating reports in Markdown format.
+* Prepared the general project report and README file
 
 ## License
 
