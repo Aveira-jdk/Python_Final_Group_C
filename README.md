@@ -19,11 +19,25 @@ Additionally, this project has "file-options" version, which allows users to cho
 ### Instructions for Running the Project
 1. Clone or download the repository containing the Python script.
 2. Install the required dependencies using pip:
-`pip install selenium python-docx fpdf`
+**Windows:**
+`pip install selenium requests python-docx fpdf`
+
+**Linux:**
+`pip3 install selenium requests python-docx fpdf`
+
+We can also install dependencies using requirements.txt
+
+`pip install -r requirements.txt`
 
 3. Ensure you have a compatible web browser installed (currently configured for Firefox, but can be changed).
 4. Run the Python script cve_scraper.py using the following command :
+
+**For Windows:**
 `python cve_scraper.py`
+
+**For GNU/Linux:**
+`python3 cve_scraper.py`
+
 
 5. Follow the prompts to input the CVE ID and generate reports.
 ### Group Members and Roles
