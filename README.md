@@ -20,10 +20,10 @@ Additionally, this project has "file-options" version, which allows users to cho
 1. Clone or download the repository containing the Python script.
 2. Install the required dependencies using pip:
 **Windows:**
-`pip install selenium requests python-docx fpdf`
+`pip install selenium python-docx fpdf`
 
 **Linux:**
-`pip3 install selenium requests python-docx fpdf`
+`pip3 install selenium python-docx fpdf`
 
 We can also install dependencies using requirements.txt
 
